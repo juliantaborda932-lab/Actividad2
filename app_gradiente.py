@@ -34,7 +34,9 @@ práctico del notebook de Cálculo Aplicado.
 )
 
 
-# Funciones matemáticas del núcleo (Usadas en el colab)
+# =========================================================
+# Funciones matemáticas del núcleo
+# =========================================================
 
 def f2(x, y):
     """Función objetivo: un 'tazón' con mínimo global en (3, -2)."""
@@ -73,7 +75,7 @@ def clasificar_convergencia(historial):
     return "converge", "🟢"
 
 
-# Grilla centrada alrededor del nuevo mínimo (3, -2)
+# Ajuste de la grilla para centrarla alrededor del nuevo mínimo (3, -2)
 _grid_x = np.linspace(-2, 8, 60)
 _grid_y = np.linspace(-7, 3, 60)
 _X, _Y = np.meshgrid(_grid_x, _grid_y)
@@ -94,8 +96,10 @@ def figura_3d(historial, titulo="", elev=25, azim=-50):
                color="orange", s=90, label="Inicio", zorder=10)
     ax.scatter([historial[-1, 0]], [historial[-1, 1]], [zs_hist[-1]],
                color="lime", s=90, label="Final", zorder=10)
-# Mínimo global actualizado
-ax.scatter([3], [-2], [f2(3, -2)], color="gold", edgecolor="black", s=80, label="Mínimo global", zorder=10)
+    
+    # Se actualizó el punto del mínimo global a (3, -2)
+    ax.scatter([3], [-2], [f2(3, -2)], color="gold", edgecolor="black",
+               s=80, label="Mínimo global", zorder=10)
 
     ax.set_xlabel("x")
     ax.set_ylabel("y")
@@ -128,8 +132,9 @@ with st.sidebar:
         min_value=0.01, max_value=1.1, value=0.1, step=0.01,
         help="Qué tan grande es cada paso del descenso.",
     )
-x0 = st.slider("Punto inicial x₀", -2.0, 8.0, 0.0, 0.1)
-y0 = st.slider("Punto inicial y₀", -7.0, 3.0, 2.0, 0.1)
+    # Sliders ajustados para explorar mejor alrededor de (3, -2)
+    x0 = st.slider("Punto inicial x₀", -2.0, 8.0, 0.0, 0.1)
+    y0 = st.slider("Punto inicial y₀", -7.0, 3.0, 2.0, 0.1)
     iteraciones = st.slider("Número de iteraciones", 5, 150, 30, 5)
 
     st.markdown("---")
@@ -167,9 +172,10 @@ if not modo_comparacion:
                 "forma inestable. Bajar un poco η suele suavizar la trayectoria."
             )
         else:
+            # Mensaje actualizado
             st.success(
                 "El algoritmo **converge** de forma estable hacia el mínimo global "
-                "en (0, 0)."
+                "en (3, -2)."
             )
 
 else:
@@ -189,7 +195,9 @@ else:
                 linewidth=2, marker="o", markersize=2)
         ax.scatter([hist_c[0, 0]], [hist_c[0, 1]], [zs_c[0]],
                    color="orange", s=50, zorder=10)
-        ax.scatter([0], [0], [f2(0, 0)], color="gold", edgecolor="black",
+        
+        # Se actualizó el punto del mínimo global en los sub-gráficos
+        ax.scatter([3], [-2], [f2(3, -2)], color="gold", edgecolor="black",
                    s=50, zorder=10)
 
         ax.set_title(f"η = {eta_c}   {icono_c} {estado_c}", fontsize=10)
