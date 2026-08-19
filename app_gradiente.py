@@ -36,15 +36,14 @@ práctico del notebook de Cálculo Aplicado.
 
 # Funciones matemáticas del núcleo (Usadas en el colab)
 
-
 def f2(x, y):
-    """Función objetivo: un 'tazón' con mínimo global en el origen."""
-    return x ** 2 + y ** 2
+    """Función objetivo: un 'tazón' con mínimo global en (3, -2)."""
+    return (x - 3) ** 2 + (y + 2) ** 2
 
 
 def gradiente_f2(x, y):
     """Gradiente de f2: vector de derivadas parciales."""
-    return np.array([2 * x, 2 * y])
+    return np.array([2 * (x - 3), 2 * (y + 2)])
 
 
 def descenso_gradiente(grad_func, punto_inicial, tasa_aprendizaje, iteraciones):
@@ -74,8 +73,10 @@ def clasificar_convergencia(historial):
     return "converge", "🟢"
 
 
-_grid = np.linspace(-4, 4, 60)
-_X, _Y = np.meshgrid(_grid, _grid)
+# Grilla centrada alrededor del nuevo mínimo (3, -2)
+_grid_x = np.linspace(-2, 8, 60)
+_grid_y = np.linspace(-7, 3, 60)
+_X, _Y = np.meshgrid(_grid_x, _grid_y)
 _Z = f2(_X, _Y)
 
 
@@ -93,8 +94,8 @@ def figura_3d(historial, titulo="", elev=25, azim=-50):
                color="orange", s=90, label="Inicio", zorder=10)
     ax.scatter([historial[-1, 0]], [historial[-1, 1]], [zs_hist[-1]],
                color="lime", s=90, label="Final", zorder=10)
-    ax.scatter([0], [0], [f2(0, 0)], color="gold", edgecolor="black",
-               s=80, label="Mínimo global", zorder=10)
+# Mínimo global actualizado
+ax.scatter([3], [-2], [f2(3, -2)], color="gold", edgecolor="black", s=80, label="Mínimo global", zorder=10)
 
     ax.set_xlabel("x")
     ax.set_ylabel("y")
@@ -127,8 +128,8 @@ with st.sidebar:
         min_value=0.01, max_value=1.1, value=0.1, step=0.01,
         help="Qué tan grande es cada paso del descenso.",
     )
-    x0 = st.slider("Punto inicial x₀", -4.0, 4.0, 2.5, 0.1)
-    y0 = st.slider("Punto inicial y₀", -4.0, 4.0, 2.5, 0.1)
+x0 = st.slider("Punto inicial x₀", -2.0, 8.0, 0.0, 0.1)
+y0 = st.slider("Punto inicial y₀", -7.0, 3.0, 2.0, 0.1)
     iteraciones = st.slider("Número de iteraciones", 5, 150, 30, 5)
 
     st.markdown("---")
